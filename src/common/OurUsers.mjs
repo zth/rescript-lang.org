@@ -144,6 +144,5 @@ var companies = [
 
 export {
   companies ,
-  
 }
 /* No side effect */

@@ -135,26 +135,32 @@ function authorDecoder(fieldName, authors, json) {
 function decode(json) {
   var fm;
   try {
+    var partial_arg = "co-authors";
+    var partial_arg$1 = function (param) {
+      return authorDecoder(partial_arg, authors, param);
+    };
+    var partial_arg$2 = "co-authors";
+    var partial_arg$3 = "previewImg";
+    var partial_arg$4 = "articleImg";
+    var partial_arg$5 = "description";
     fm = {
       author: decodeAuthor("author", authors, Json_decode.field("author", Json_decode.string, json)),
       co_authors: Belt_Option.getWithDefault(Json_decode.optional((function (param) {
-                  return Json_decode.field("co-authors", (function (param) {
-                                return authorDecoder("co-authors", authors, param);
-                              }), param);
+                  return Json_decode.field(partial_arg$2, partial_arg$1, param);
                 }), json), []),
       date: Json_decode.field("date", Json_decode.string, json),
       previewImg: Js_null.fromOption(Json_decode.optional((function (param) {
-                  return Json_decode.field("previewImg", Json_decode.string, param);
+                  return Json_decode.field(partial_arg$3, Json_decode.string, param);
                 }), json)),
       articleImg: Js_null.fromOption(Json_decode.optional((function (param) {
-                  return Json_decode.field("articleImg", Json_decode.string, param);
+                  return Json_decode.field(partial_arg$4, Json_decode.string, param);
                 }), json)),
       title: Json_decode.field("title", Json_decode.string, json),
       badge: Js_null.fromOption(Json_decode.optional((function (j) {
                   return decodeBadge(Json_decode.field("badge", Json_decode.string, j));
                 }), json)),
       description: Json_decode.nullable((function (param) {
-              return Json_decode.field("description", Json_decode.string, param);
+              return Json_decode.field(partial_arg$5, Json_decode.string, param);
             }), json)
     };
   }
@@ -191,6 +197,5 @@ export {
   decodeAuthor ,
   authorDecoder ,
   decode ,
-  
 }
 /* No side effect */

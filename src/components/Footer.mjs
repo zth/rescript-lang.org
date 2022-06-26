@@ -85,6 +85,5 @@ var make = Footer;
 
 export {
   make ,
-  
 }
 /* Icon Not a pure module */

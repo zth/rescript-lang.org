@@ -57,16 +57,16 @@ function DocsLayout(Props) {
   var setSidebarOpen = match[1];
   var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
-    return Curry._1(setSidebarOpen, (function (prev) {
-                  return !prev;
-                }));
+    Curry._1(setSidebarOpen, (function (prev) {
+            return !prev;
+          }));
   };
   React.useEffect((function () {
           var events = router.events;
           var onChangeComplete = function (_url) {
-            return Curry._1(setSidebarOpen, (function (param) {
-                          return false;
-                        }));
+            Curry._1(setSidebarOpen, (function (param) {
+                    return false;
+                  }));
           };
           Curry._2(Next.Router.Events.on, events, {
                 NAME: "routeChangeComplete",
@@ -81,10 +81,10 @@ function DocsLayout(Props) {
                           NAME: "routeChangeComplete",
                           VAL: onChangeComplete
                         });
-                    return Curry._2(Next.Router.Events.off, events, {
-                                NAME: "hashChangeComplete",
-                                VAL: onChangeComplete
-                              });
+                    Curry._2(Next.Router.Events.off, events, {
+                          NAME: "hashChangeComplete",
+                          VAL: onChangeComplete
+                        });
                   });
         }), []);
   var tmp;
@@ -95,7 +95,7 @@ function DocsLayout(Props) {
         var version = evt.target.value;
         var url = Url.parse(route);
         var targetUrl = "/" + (url.base.join("/") + ("/" + (version + ("/" + url.pagepath.join("/")))));
-        return Next.Router.push(router, targetUrl);
+        Next.Router.push(router, targetUrl);
       };
       tmp = React.createElement(VersionSelect.make, {
             onChange: onChange,
@@ -125,7 +125,7 @@ function DocsLayout(Props) {
     tmp$1.activeToc = Caml_option.valFromOption(activeToc);
   }
   var sidebar = React.createElement(SidebarLayout.Sidebar.make, tmp$1);
-  var metaTitle = metaTitleCategory !== undefined ? metaTitleCategory + " | ReScript Documentation" : title;
+  var metaTitle = metaTitleCategory !== undefined ? metaTitleCategory + (" | " + "ReScript Documentation") : title;
   var match$1;
   if (frontmatter !== undefined) {
     var fm = DocFrontmatter.decode(Caml_option.valFromOption(frontmatter));
@@ -278,6 +278,5 @@ export {
   makeBreadcrumbs ,
   make ,
   Make ,
-  
 }
 /* Meta Not a pure module */

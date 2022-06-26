@@ -6,16 +6,19 @@ import * as Caml_js_exceptions from "rescript/lib/es6/caml_js_exceptions.js";
 
 function decode(json) {
   try {
+    var partial_arg = "metaTitle";
+    var partial_arg$1 = "description";
+    var partial_arg$2 = "canonical";
     return {
             title: Json_decode.field("title", Json_decode.string, json),
             metaTitle: Js_null.fromOption(Json_decode.optional((function (param) {
-                        return Json_decode.field("metaTitle", Json_decode.string, param);
+                        return Json_decode.field(partial_arg, Json_decode.string, param);
                       }), json)),
             description: Js_null.fromOption(Json_decode.optional((function (param) {
-                        return Json_decode.field("description", Json_decode.string, param);
+                        return Json_decode.field(partial_arg$1, Json_decode.string, param);
                       }), json)),
             canonical: Js_null.fromOption(Json_decode.optional((function (param) {
-                        return Json_decode.field("canonical", Json_decode.string, param);
+                        return Json_decode.field(partial_arg$2, Json_decode.string, param);
                       }), json)),
             ghEditHref: Json_decode.field("__ghEditHref", Json_decode.string, json)
           };
@@ -31,6 +34,5 @@ function decode(json) {
 
 export {
   decode ,
-  
 }
 /* No side effect */

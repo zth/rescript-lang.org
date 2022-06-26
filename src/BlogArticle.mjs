@@ -214,6 +214,5 @@ export {
   $$default as default,
   getStaticProps ,
   getStaticPaths ,
-  
 }
 /* middleDotSpacer Not a pure module */

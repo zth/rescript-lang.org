@@ -242,13 +242,14 @@ function decode$4(json) {
 }
 
 function decode$5(time, json) {
+  var partial_arg = "type_hints";
   return {
           js_code: Json_decode.field("js_code", Json_decode.string, json),
           warnings: Json_decode.field("warnings", (function (param) {
                   return Json_decode.array(decode$2, param);
                 }), json),
           type_hints: Json_decode.withDefault([], (function (param) {
-                  return Json_decode.field("type_hints", (function (param) {
+                  return Json_decode.field(partial_arg, (function (param) {
                                 return Json_decode.array(decode$4, param);
                               }), param);
                 }), json),
@@ -475,10 +476,8 @@ function setConfig(t, config) {
   }
   Belt_Option.forEach(moduleSystem, (function (moduleSystem) {
           t.setModuleSystem(moduleSystem);
-          
         }));
   t.setWarnFlags(config.warn_flags);
-  
 }
 
 function convertSyntax(fromLang, toLang, code, t) {
@@ -575,6 +574,5 @@ export {
   ConversionResult ,
   Config ,
   Compiler ,
-  
 }
 /* No side effect */
