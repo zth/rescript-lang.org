@@ -16,7 +16,6 @@ import * as Process from "process";
 import * as Markdown from "./components/Markdown.mjs";
 import * as SearchBox from "./components/SearchBox.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
-import * as Js_promise from "rescript/lib/es6/js_promise.js";
 import * as Navigation from "./components/Navigation.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
@@ -503,34 +502,30 @@ function $$default(props) {
                                         }))))), React.createElement(Footer.make, {}))));
 }
 
-function getStaticProps(_ctx) {
-  var __x = fetch("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250");
-  var __x$1 = Js_promise.then_((function (response) {
-          return response.json();
-        }), __x);
-  return Js_promise.then_((function (data) {
-                var pkges = Belt_Array.map(data.objects, (function (item) {
-                        var pkg = item.package;
-                        return {
-                                name: pkg.name,
-                                version: pkg.version,
-                                keywords: uniqueKeywords(filterKeywords(pkg.keywords)),
-                                description: Belt_Option.getWithDefault(pkg.description, ""),
-                                repositoryHref: Js_null.fromOption(pkg.links.repository),
-                                npmHref: pkg.links.npm
-                              };
-                      }));
-                var index_data_dir = Path.join(Process.cwd(), "./data");
-                var urlResources = JSON.parse(Fs.readFileSync(Path.join(index_data_dir, "packages_url_resources.json"), "utf8"));
-                var props = {
-                  packages: pkges,
-                  urlResources: urlResources
+async function getStaticProps(_ctx) {
+  var response = await fetch("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250");
+  var data = await response.json();
+  var pkges = Belt_Array.map(data.objects, (function (item) {
+          var pkg = item.package;
+          return {
+                  name: pkg.name,
+                  version: pkg.version,
+                  keywords: uniqueKeywords(filterKeywords(pkg.keywords)),
+                  description: Belt_Option.getWithDefault(pkg.description, ""),
+                  repositoryHref: Js_null.fromOption(pkg.links.repository),
+                  npmHref: pkg.links.npm
                 };
-                return Promise.resolve({
-                            props: props,
-                            revalidate: 43200
-                          });
-              }), __x$1);
+        }));
+  var index_data_dir = Path.join(Process.cwd(), "./data");
+  var urlResources = JSON.parse(Fs.readFileSync(Path.join(index_data_dir, "packages_url_resources.json"), "utf8"));
+  var props = {
+    packages: pkges,
+    urlResources: urlResources
+  };
+  return {
+          props: props,
+          revalidate: 43200
+        };
 }
 
 export {

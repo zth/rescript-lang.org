@@ -518,12 +518,15 @@ module Response = {
 
 @val external fetchNpmPackages: string => Js.Promise.t<Response.t> = "fetch"
 
-let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
-  fetchNpmPackages("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250")
-  ->Js.Promise.then_(response => {
-    Response.json(response)
-  }, _)
-  ->Js.Promise.then_(data => {
+let getStaticProps: Next.GetStaticProps.revalidate<props, unit> =
+  @async
+  _ctx => {
+    let response =
+      @await
+      fetchNpmPackages("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250")
+
+    let data = @await Response.json(response)
+
     let pkges = Belt.Array.map(data["objects"], item => {
       let pkg = item["package"]
       {
@@ -546,10 +549,9 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
       "packages": pkges,
       "urlResources": urlResources,
     }
-    let ret = {
+
+    {
       "props": props,
       "revalidate": 43200,
     }
-    Js.Promise.resolve(ret)
-  }, _)
-}
+  }
